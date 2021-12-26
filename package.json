@@ -1,0 +1,16 @@
+{
+  "name": "phony_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "bin": "src/bin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/bin.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "naudiodon": "^2.3.6"
+  }
+}
