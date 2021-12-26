@@ -15,10 +15,10 @@ module.exports = {
         });
 
         // Create a write stream to write out to a raw audio file
-        const ws = fs.createWriteStream('rawAudio.raw');
+        //const ws = fs.createWriteStream('rawAudio.raw');
 
         //Start streaming
-        ai.pipe(ws);
+        //ai.pipe(ws);
         ai.start();
 
         return ai;

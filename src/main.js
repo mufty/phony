@@ -1,13 +1,19 @@
 const phonyAudio = require('./audio/device'),
+    phonyPlayback = require('./audio/playback'),
     phonyNet = require('./net/server');
 
 let ai;
+let playback;
 let server;
 
 const PORT = 18561;
 
 process.on('SIGINT', () => {
     console.log('Received SIGINT. Stopping recording.');
+
+    if (playback)
+        playback.close();
+
     if (ai)
         ai.quit();
 
@@ -20,7 +26,14 @@ process.on('SIGINT', () => {
 });
 
 module.exports = () => {
-    let server = phonyNet.create(PORT);
+    playback = phonyPlayback.create();
+
+    let server = phonyNet.create(PORT, data => {
+        if (playback)
+            return;
+
+        playback.write(data);
+    });
 
     ai = phonyAudio.create();
 

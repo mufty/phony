@@ -3,7 +3,7 @@ const net = require('net');
 let socket;
 
 module.exports = {
-    create: (port) => {
+    create: (port, onData) => {
         const server = new net.Server();
 
         server.listen(port, () => {
@@ -18,6 +18,8 @@ module.exports = {
             // The server can also receive data from the client by reading from its socket.
             socket.on('data', (chunk) => {
                 console.log(`Data received from client: ${chunk.toString()}.`);
+                if (onData)
+                    onData(chunk);
             });
 
             // When the client requests to end the TCP connection with the server, the server
