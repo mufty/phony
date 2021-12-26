@@ -26,6 +26,6 @@ module.exports = () => {
 
     ai.on('data', buf => {
         server.send(buf);
-        console.log(buf);
+        //console.log(buf);
     });
 }

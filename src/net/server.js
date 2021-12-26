@@ -10,7 +10,7 @@ module.exports = {
             console.log(`Server listening on port: ${port}`);
         });
 
-        server.on('conneciton', (socket) => {
+        server.on('connection', (socket) => {
             //assume p2p connection
             server.socket = socket;
             console.log('A new connection has been established.');
@@ -38,7 +38,7 @@ module.exports = {
                 return;
             }
 
-            server.socker.write(data);
+            server.socket.write(data);
         };
 
         return server;
