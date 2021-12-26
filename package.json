@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "naudiodon": "^2.3.6"
+    "naudiodon": "^2.3.6",
+    "speaker": "^0.5.3"
   }
 }
