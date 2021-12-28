@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@abandonware/noble": "^1.9.2-15",
     "naudiodon": "^2.3.6",
+    "node-notifier": "^10.0.0",
     "speaker": "^0.5.3"
   }
 }
