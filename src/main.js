@@ -31,11 +31,15 @@ module.exports = () => {
     //playback = phonyPlayback.create();
 
     let server = phonyNet.create(PORT, data => {
-        let obj = JSON.parse(data);
-        if (!obj)
-            return;
+        try {
+            let obj = JSON.parse(data);
+            if (!obj)
+                return;
 
-        messageHandler.handle(obj);
+            messageHandler.handle(obj);
+        } catch (e) {
+            console.log(e);
+        }
         /*if (playback)
             return;
 
