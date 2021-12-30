@@ -1,6 +1,7 @@
 const net = require('net');
 
 let socket;
+let serverInstance;
 
 module.exports = {
     create: (port, onData) => {
@@ -40,9 +41,16 @@ module.exports = {
                 return;
             }
 
+            console.log('Sending data: ' + data);
+
             server.socket.write(data);
         };
 
+        serverInstance = server;
+
         return server;
+    },
+    getServer: () => {
+        return serverInstance;
     }
 }

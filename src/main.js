@@ -1,55 +1,5 @@
-const
-    /*phonyAudio = require('./audio/device'),
-       phonyPlayback = require('./audio/playback'),*/
-    phonyNet = require('./net/server'),
-    messageHandler = require('./net/message');
-
-/*let ai;
-let playback;*/
-let server;
-
-const PORT = 18561;
-
-process.on('SIGINT', () => {
-    console.log('Received SIGINT. Stopping recording.');
-
-    /*if (playback)
-        playback.close();
-
-    if (ai)
-        ai.quit();*/
-
-    if (server)
-        server.close(() => {
-            console.log('Server stopped');
-        });
-
-    process.exit();
-});
+const ui = require('./ui/tray');
 
 module.exports = () => {
-    //playback = phonyPlayback.create();
-
-    let server = phonyNet.create(PORT, data => {
-        try {
-            let obj = JSON.parse(data);
-            if (!obj)
-                return;
-
-            messageHandler.handle(obj);
-        } catch (e) {
-            console.log(e);
-        }
-        /*if (playback)
-            return;
-
-        playback.write(data);*/
-    });
-
-    /*ai = phonyAudio.create();
-
-    ai.on('data', buf => {
-        server.send(buf);
-        //console.log(buf);
-    });*/
+    ui.create();
 }
