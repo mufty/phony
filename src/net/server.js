@@ -1,54 +1,57 @@
 const net = require('net');
+const zmq = require('zeromq');
+const sock = zmq.socket('pair');
 
 let socket;
 let serverInstance;
 
 module.exports = {
     create: (port, onData) => {
-        const server = new net.Server();
+        sock.bindSync("tcp://*:" + port);
+        console.log('Pair bound to port ' + port);
 
-        server.listen(port, () => {
-            console.log(`Server listening on port: ${port}`);
+        sock.on('message', (message) => {
+            console.log(`Data received from client: ${message}.`);
+            if (message)
+                onData(message);
         });
 
-        server.on('connection', (socket) => {
-            //assume p2p connection
-            server.socket = socket;
-            console.log('A new connection has been established.');
-
-            // The server can also receive data from the client by reading from its socket.
-            socket.on('data', (chunk) => {
-                console.log(`Data received from client: ${chunk.toString()}.`);
-                if (onData)
-                    onData(chunk);
-            });
-
-            // When the client requests to end the TCP connection with the server, the server
-            // ends the connection.
-            socket.on('end', () => {
-                console.log('Closing connection with the client');
-            });
-
-            // Don't forget to catch error, for your own sake.
-            socket.on('error', (err) => {
-                console.log(`Error: ${err}`);
-            });
+        sock.on('connect', function(fd, ep) {
+            console.log('connect, endpoint:', ep);
+        });
+        sock.on('connect_delay', function(fd, ep) {
+            console.log('connect_delay, endpoint:', ep);
+        });
+        sock.on('connect_retry', function(fd, ep) {
+            console.log('connect_retry, endpoint:', ep);
+        });
+        sock.on('listen', function(fd, ep) {
+            console.log('listen, endpoint:', ep);
+        });
+        sock.on('bind_error', function(fd, ep) {
+            console.log('bind_error, endpoint:', ep);
+        });
+        sock.on('accept', function(fd, ep) {
+            console.log('accept, endpoint:', ep);
+        });
+        sock.on('accept_error', function(fd, ep) {
+            console.log('accept_error, endpoint:', ep);
+        });
+        sock.on('close', function(fd, ep) {
+            console.log('close, endpoint:', ep);
+        });
+        sock.on('close_error', function(fd, ep) {
+            console.log('close_error, endpoint:', ep);
+        });
+        sock.on('disconnect', function(fd, ep) {
+            console.log('disconnect, endpoint:', ep);
         });
 
-        server.send = (data) => {
-            if (!server.socket) {
-                console.log('No client connected.');
-                return;
-            }
+        sock.monitor(500, 0);
 
-            console.log('Sending data: ' + data);
+        serverInstance = sock;
 
-            server.socket.write(data);
-        };
-
-        serverInstance = server;
-
-        return server;
+        return serverInstance;
     },
     getServer: () => {
         return serverInstance;

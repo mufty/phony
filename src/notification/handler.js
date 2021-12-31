@@ -32,6 +32,7 @@ module.exports = {
         if (!notification)
             return;
 
+        //TODO handle duplicated by keeping track of notification.id
         let noteObject = Object.assign({
             actions: ['OK', 'Cancel', 'Answer']
         }, notification);
